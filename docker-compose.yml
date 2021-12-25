@@ -8,17 +8,25 @@ services:
       context: ./config/php-fpm
       dockerfile: Dockerfile
     container_name: ${PROJECT_NAME}-app
+    mem_limit: 1024M
+    mem_reservation: 256M
     restart: unless-stopped
     working_dir: /var/www/
+    environment: 
+      VIRTUAL_HOST: dev.studentgroup.ir
     volumes:
       - ${ROOT_DIRECTORY}:/var/www
     networks:
-      - lempserver
+      - dev
 
   db:
     image: mariadb:10.4.21
+    mem_limit: 1024M
+    mem_reservation: 256M
     container_name: ${PROJECT_NAME}-db
     restart: unless-stopped
+    ports:
+      - '43306:3306'
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -27,44 +35,33 @@ services:
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     networks:
-      - lempserver
+      - dev
 
   nginx:
     image: nginx:alpine
     container_name: ${PROJECT_NAME}-nginx
+    mem_limit: 1024M
+    mem_reservation: 256M
     restart: unless-stopped
     ports:
-      - ${APP_PORT}:80
-      # - ${APP_PORT_SECURE}:443
+       - ${APP_PORT}:80
+       - ${APP_PORT_SECURE}:443
     volumes:
       - ${ROOT_DIRECTORY}:/var/www
-      - ./config/nginx:/etc/nginx/conf.d/
+      - ./conf1ig/nginx:/etc/nginx/conf.d/
       - ./config/certs:/etc/nginx/certs
-      - ./config/nginx/site.conf:/etc/nginx/nginx.conf
     networks:
-      - lempserver
-
-  elasticsearch:
-    image: elasticsearch:7.9.3
-    container_name: ${PROJECT_NAME}-elasticsearch
+      - dev
+  redis:
+    image: redis:alpine
+    mem_limit: 1024M
+    mem_reservation: 256M
+    container_name: ${PROJECT_NAME}-redis
     restart: unless-stopped
-    environment:
-      - node.name=es01_${PROJECT_NAME}
-      - node.master=true
-      - node.data=true
-      - transport.host=localhost  
-      - cluster.name=es-docker-cluster_${PROJECT_NAME}
-      # - discovery.seed_hosts=es02,es03
-      # - cluster.initial_master_nodes=es01,es02,es03
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+    ports:
+      - '46379:6379'
     networks:
-     - lempserver
-
+      - dev
 networks:
-  lempserver:
+  dev:
     driver: bridge

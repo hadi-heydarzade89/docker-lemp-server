@@ -1,4 +1,4 @@
-/.idea
-.env
-/config/certs
 /www
+.env
+/.idea
+/config/certs/
