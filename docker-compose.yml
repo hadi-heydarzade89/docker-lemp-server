@@ -1,4 +1,4 @@
-version: "3.7"
+version: "2.2"
 services:
   app:
     build:
@@ -48,7 +48,7 @@ services:
        - ${APP_PORT_SECURE}:443
     volumes:
       - ${ROOT_DIRECTORY}:/var/www
-      - ./conf1ig/nginx:/etc/nginx/conf.d/
+      - ./config/nginx:/etc/nginx/conf.d/
       - ./config/certs:/etc/nginx/certs
     networks:
       - dev
