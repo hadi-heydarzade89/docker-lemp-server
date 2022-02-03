@@ -27,6 +27,8 @@ services:
       POSTGRES_DB: ${MYSQL_DATABASE}
       POSTGRES_PASSWORD: example
       POSTGRES_USER: ${MYSQL_USER}
+    ports:
+      - '5432:5432'
     networks:
       - trader
 
