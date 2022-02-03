@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8-fpm-buster
 
 # Arguments defined in docker-compose.yml
 ARG user
@@ -10,18 +10,44 @@ RUN apt-get update && apt-get install -y \
     curl \
     libpng-dev \
     libonig-dev \
-    openssl \
-    libzip-dev \
-    iputils-ping \
+    libxml2-dev \
     zip \
-    libxslt1-dev 
+    unzip \
+    iputils-ping \
+    # sen email configuration
+    zlib1g-dev \
+    libzip-dev \
+    redis-tools \
+    sendmail \
+    vim \
+    libpq-dev
+RUN echo "sendmail_path=/usr/sbin/sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini 
+RUN pecl install redis
+RUN pecl install openswoole
+
+# Install PHP extensions
+RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsq
+RUN docker-php-ext-install  mbstring exif pcntl bcmath gd mysqli pdo_mysql zip pdo_pgsql pgsql intl
+RUN docker-php-ext-enable redis pdo_pgsql
+
+
+
+
+
+RUN sed -i '/#!\/bin\/sh/aservice sendmail restart' /usr/local/bin/docker-php-entrypoint
+
+RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts' /usr/local/bin/docker-php-entrypoint
+
+
+
+# And clean up the image
+
+RUN rm -rf /var/lib/apt/lists/*
+
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd intl soap sockets xsl zip 
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
