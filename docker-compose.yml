@@ -1,4 +1,4 @@
-version: "3.7"
+version: "2.2"
 services:
   app:
     build:
@@ -23,8 +23,6 @@ services:
     volumes:
       - db_trader:/var/lib/postgresql/data/
     restart: always
-    expose:
-      - '5432:5432'
     environment:
       POSTGRES_DB: ${MYSQL_DATABASE}
       POSTGRES_PASSWORD: example
@@ -49,8 +47,6 @@ services:
     image: redis:alpine
     container_name: ${PROJECT_NAME}-redis
     restart: always
-    expose:
-      - '6379:6379'
     networks:
       - trader
 volumes:
