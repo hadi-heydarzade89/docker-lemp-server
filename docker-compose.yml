@@ -25,7 +25,7 @@ services:
     restart: always
     environment:
       POSTGRES_DB: ${MYSQL_DATABASE}
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       POSTGRES_USER: ${MYSQL_USER}
     ports:
       - '5432:5432'
