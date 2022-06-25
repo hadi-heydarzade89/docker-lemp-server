@@ -28,7 +28,7 @@ RUN pecl install openswoole
 # Install PHP extensions
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsq
 RUN docker-php-ext-install  mbstring exif pcntl bcmath gd mysqli pdo_mysql zip pdo_pgsql pgsql intl
-RUN docker-php-ext-enable redis pdo_pgsql
+RUN docker-php-ext-enable redis pdo_pgsql openswoole
 
 
 
