@@ -29,8 +29,10 @@ RUN pecl install openswoole
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsq
 RUN docker-php-ext-install  mbstring exif pcntl bcmath gd mysqli pdo_mysql zip pdo_pgsql pgsql intl
 RUN docker-php-ext-enable redis pdo_pgsql openswoole
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
-
+ENV NVM_DIR=/root/.nvm
+RUN . $HOME/.nvm/nvm.sh && nvm install --lts
 
 
 
@@ -53,9 +55,9 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
+#RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /$user/.composer
+#    chown -R $user:$user /home/$user
 
 # Set working directory
 WORKDIR /var/www

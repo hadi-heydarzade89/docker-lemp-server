@@ -3,7 +3,7 @@ services:
   app:
     build:
       args:
-        user: dealer
+        user: root
         uid: 1000
       context: ./config/php-fpm
       dockerfile: Dockerfile
