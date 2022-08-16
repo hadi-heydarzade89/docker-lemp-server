@@ -3,8 +3,8 @@ services:
   app:
     build:
       args:
-        user: root
-        uid: 1000
+        user: ${WEB_USER}
+        uid: ${UID}
       context: ./config/php-fpm
       dockerfile: Dockerfile
     container_name: ${PROJECT_NAME}-app
