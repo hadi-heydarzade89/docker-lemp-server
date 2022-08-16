@@ -65,4 +65,3 @@ ENV NVM_DIR=/home/$user/.nvm
 RUN . $HOME/.nvm/nvm.sh && nvm install --lts
 # Set working directory
 WORKDIR /var/www
-RUN source /home/$user/nvm.sh
