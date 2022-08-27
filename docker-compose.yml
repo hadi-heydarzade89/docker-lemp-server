@@ -33,7 +33,7 @@ services:
       - trader
 
   nginx:
-    image: nginx:alpine
+    image: nginx:stable
     container_name: ${PROJECT_NAME}-nginx
     restart: always
     ports:
