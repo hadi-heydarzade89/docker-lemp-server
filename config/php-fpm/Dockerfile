@@ -20,7 +20,8 @@ RUN apt-get update && apt-get install -y \
     redis-tools \
     sendmail \
     vim \
-    libpq-dev
+    libpq-dev \
+    net-tools
 RUN echo "sendmail_path=/usr/sbin/sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini 
 RUN pecl install redis
 RUN pecl install openswoole
