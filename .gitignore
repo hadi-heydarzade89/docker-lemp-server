@@ -2,3 +2,4 @@
 .env
 /config/certs
 /www
+/config/nginx
