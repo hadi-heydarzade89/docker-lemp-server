@@ -2,7 +2,7 @@
 
 ## Technologies
 * [PHP 8.1]
-* [PostgreSQL: latest]
+* [MySQL: latest]
 * [Nginx: latest]
 * [Redis: latest]
 
